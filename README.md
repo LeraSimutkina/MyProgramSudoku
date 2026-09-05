@@ -1,4 +1,4 @@
-Sudoku
+##Sudoku
 A full-stack Sudoku application built with C# and .NET. The project combines an ASP.NET Core Web API, SQL Server database, WPF desktop client and web client.
 
 Features:
@@ -49,14 +49,14 @@ Main entities include:
 - Game progress
 - Notifications
 
-User Secrets
+##User Secrets
 Configure the following secrets for local development:
 Jwt:Secret
 Admin:Login
 Admin:Password
 Do not commit real secrets to the repository.
 
-Project Structure
+##Project Structure
 MyProgramSudoku/
 │
 ├── SudokuAPI/
