@@ -39,7 +39,9 @@ Web Client
 - CSS
 - JavaScript
 
-<img width="1536" height="1024" alt="image" src="https://github.com/user-attachments/assets/8672cda4-b8a7-4293-bcd5-9d3aca866a53" />
+Architecture
+
+![Sudoku Application Architecture](architecture.png)
 
 Authentication and Security
 
