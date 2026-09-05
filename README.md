@@ -1,4 +1,5 @@
-##Sudoku
+Sudoku
+
 A full-stack Sudoku application built with C# and .NET. The project combines an ASP.NET Core Web API, SQL Server database, WPF desktop client and web client.
 
 Features:
@@ -17,6 +18,7 @@ Features:
 - Swagger / OpenAPI documentation
 
 Technologies:
+
 Backend
 - C#
 - ASP.NET Core Web API
@@ -40,23 +42,29 @@ Web Client
 <img width="1536" height="1024" alt="image" src="https://github.com/user-attachments/assets/8672cda4-b8a7-4293-bcd5-9d3aca866a53" />
 
 Authentication and Security
+
 The application uses JWT Bearer Authentication for user authorization. Passwords are stored using BCrypt hashing rather than plain text. Role-based authorization is used to protect administrator functionality. JWT and administrator credentials are stored using ASP.NET Core User Secrets during local development. Sensitive credentials are not stored in the repository.
 
 Database
+
 The application uses SQL Server with Entity Framework Core. The project includes Entity Framework Core migrations for database creation and updates.
 Main entities include:
 - Users
 - Game progress
 - Notifications
 
-##User Secrets
+User Secrets
+
 Configure the following secrets for local development:
-Jwt:Secret
-Admin:Login
+
+Jwt:Secret  
+Admin:Login  
 Admin:Password
+
 Do not commit real secrets to the repository.
 
-##Project Structure
+Project Structure
+
 MyProgramSudoku/
 │
 ├── SudokuAPI/
@@ -85,4 +93,5 @@ Future Improvements
 -UI improvements
 
 Project Status
+
 This project was created as a learning and portfolio project and is still open to further improvements.
