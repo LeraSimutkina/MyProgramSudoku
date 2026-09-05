@@ -1,0 +1,123 @@
+﻿<Page x:Class="SudokuEcosystem.Views.SettingsPage"
+      xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+      xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+      Title="Настройки игры"
+      Background="#FFFFF0F5"
+      Loaded="Page_Loaded">
+
+    <Page.Resources>
+        <Style TargetType="Button" x:Key="SettingActionButton">
+            <Setter Property="Height" Value="38"/>
+            <Setter Property="FontSize" Value="14"/>
+            <Setter Property="FontWeight" Value="SemiBold"/>
+            <Setter Property="Background" Value="#FFC71585"/>
+            <Setter Property="Foreground" Value="White"/>
+            <Setter Property="Cursor" Value="Hand"/>
+            <Setter Property="BorderThickness" Value="0"/>
+            <Style.Resources>
+                <Style TargetType="Border">
+                    <Setter Property="CornerRadius" Value="8"/>
+                </Style>
+            </Style.Resources>
+        </Style>
+    </Page.Resources>
+
+    <Grid>
+        <Grid.Background>
+            <LinearGradientBrush StartPoint="0,0" EndPoint="1,1">
+                <GradientStop Color="#FFE6E6FA" Offset="0.0"/>
+                <GradientStop Color="#FFFFF0F5" Offset="0.5"/>
+                <GradientStop Color="#FFFFE4E1" Offset="1.0"/>
+            </LinearGradientBrush>
+        </Grid.Background>
+
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="*"/>
+        </Grid.RowDefinitions>
+
+        <Border Grid.Row="0" Background="#85FFFFFF" Padding="12" Margin="15,15,15,5" CornerRadius="12">
+            <Grid>
+                <Button Content="⬅ Меню" 
+                        Style="{StaticResource SettingActionButton}"
+                        Background="#FFDB7093" 
+                        HorizontalAlignment="Left" 
+                        VerticalAlignment="Center"
+                        Width="90" Height="35"
+                        Click="BackButton_Click"/>
+
+                <TextBlock Text=" НАСТРОЙКИ" FontSize="24" FontWeight="Black" 
+                           Foreground="#FFC71585" HorizontalAlignment="Center" VerticalAlignment="Center">
+                    <TextBlock.Effect>
+                        <DropShadowEffect BlurRadius="5" Color="#FFFFB6C1" ShadowDepth="2" Opacity="0.6"/>
+                    </TextBlock.Effect>
+                </TextBlock>
+            </Grid>
+        </Border>
+
+        <ScrollViewer Grid.Row="1" Margin="5,5,5,15" VerticalScrollBarVisibility="Auto">
+            <StackPanel VerticalAlignment="Center" HorizontalAlignment="Center" Width="420" Margin="0,10,0,10">
+
+                <Border Background="#85FFFFFF" CornerRadius="15" Padding="20" Margin="0,0,0,15">
+                    <StackPanel>
+                        <TextBlock Text=" ЗВУК И МУЗЫКА" FontSize="16" FontWeight="Bold" 
+                                   Foreground="#FF8B008B" Margin="0,0,0,12"/>
+
+                        <CheckBox x:Name="SoundCheckBox" Content="Включить звуковые эффекты" 
+                                  FontSize="14" Foreground="#FF4A004A" Margin="0,5"/>
+
+                        <StackPanel Orientation="Horizontal" Margin="0,10,0,5">
+                            <TextBlock Text="Громкость:" FontSize="14" Foreground="#FF4A004A" Width="90" VerticalAlignment="Center"/>
+                            <Slider x:Name="VolumeSlider" Width="200" Minimum="0" Maximum="100" 
+                                    Foreground="#FFC71585" VerticalAlignment="Center"
+                                    ValueChanged="VolumeSlider_ValueChanged"/>
+                            <TextBlock x:Name="VolumeValue" Text="70%" FontSize="14" FontWeight="SemiBold" 
+                                       Foreground="#FFC71585" Width="50" TextAlignment="Right" VerticalAlignment="Center"/>
+                        </StackPanel>
+                    </StackPanel>
+                </Border>
+
+                <Border Background="#85FFFFFF" CornerRadius="15" Padding="20" Margin="0,0,0,15">
+                    <StackPanel>
+                        <TextBlock Text=" ИГРОВОЙ ПРОЦЕСС" FontSize="16" FontWeight="Bold" 
+                                   Foreground="#FF8B008B" Margin="0,0,0,12"/>
+
+                        <CheckBox x:Name="AutoSaveCheckBox" Content="Подсвечивать ошибки при вводе" 
+                                  FontSize="14" Foreground="#FF4A004A" Margin="0,5"/>
+
+                        <StackPanel Orientation="Horizontal" Margin="0,12,0,5">
+                            <TextBlock Text="Цвет темы:" FontSize="14" Foreground="#FF4A004A" Width="90" VerticalAlignment="Center"/>
+                            <ComboBox x:Name="ThemeComboBox" Width="180" Height="28" SelectedIndex="0" 
+                                      VerticalContentAlignment="Center" FontSize="13">
+                                <ComboBoxItem Content="Розовая (Стандарт)"/>
+                                <ComboBoxItem Content="Классическая темная"/>
+                            </ComboBox>
+                        </StackPanel>
+                    </StackPanel>
+                </Border>
+
+                <Border Background="#85FFFFFF" CornerRadius="15" Padding="20" Margin="0,0,0,20">
+                    <StackPanel>
+                        <TextBlock Text=" БЕЗОПАСНОСТЬ И ДАННЫЕ" FontSize="16" FontWeight="Bold" 
+                                   Foreground="#FF8B008B" Margin="0,0,0,12"/>
+                        <Button x:Name="ResetBtn" Content="Сбросить к заводским настройкам" 
+                                Height="35" Style="{StaticResource SettingActionButton}"
+                                Background="#FFFF4500" Foreground="White" FontWeight="Bold" 
+                                Click="ResetBtn_Click"/>
+                    </StackPanel>
+                </Border>
+
+                <Button Content=" Сохранить настройки" 
+                        Height="48" FontSize="16" FontWeight="Bold"
+                        Style="{StaticResource SettingActionButton}"
+                        Background="#FFC71585" Foreground="White" 
+                        Margin="0,5,0,10" Click="SaveButton_Click">
+                    <Button.Effect>
+                        <DropShadowEffect BlurRadius="8" Color="#FFC71585" ShadowDepth="2" Opacity="0.4"/>
+                    </Button.Effect>
+                </Button>
+
+            </StackPanel>
+        </ScrollViewer>
+    </Grid>
+</Page>

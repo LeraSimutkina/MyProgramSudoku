@@ -1,0 +1,10 @@
+<Solution>
+  <Folder Name="/SudokuWeb/">
+    <File Path="index.html" />
+  </Folder>
+  <Folder Name="/Элементы решения/">
+    <File Path=".gitignore" />
+  </Folder>
+  <Project Path="SudokuAPI/SudokuAPI.csproj" />
+  <Project Path="SudokuEcosystem/SudokuEcosystem.csproj" Id="7f9e4bad-49b0-4f5a-8e93-cd2b9d42a370" />
+</Solution>

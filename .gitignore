@@ -1,0 +1,35 @@
+# Visual Studio
+.vs/
+*.user
+*.suo
+
+# Build results
+[Bb]in/
+[Oo]bj/
+
+# NuGet
+packages/
+
+# User-specific files
+*.userprefs
+
+# Logs
+*.log
+
+# Database files / backups
+*.bak
+*.mdf
+*.ldf
+
+# Rider / JetBrains
+.idea/
+
+# OS files
+.DS_Store
+Thumbs.db
+
+# ASP.NET Core
+appsettings.Development.json
+
+# Secrets
+secrets.json

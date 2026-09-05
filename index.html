@@ -1,0 +1,603 @@
+﻿<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sudoku API - Web Game Client</title>
+    <style>
+        /* Стиль Сакуры и Лаванды */
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #E6E6FA 0%, #FFF0F5 50%, #FFE4E1 100%);
+            margin: 0;
+            padding: 20px;
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            color: #4A004A;
+        }
+
+        .container {
+            background-color: rgba(255, 255, 255, 0.9);
+            padding: 30px;
+            border-radius: 20px;
+            box-shadow: 0 10px 30px rgba(216, 191, 216, 0.5);
+            max-width: 650px;
+            width: 100%;
+            box-sizing: border-box;
+            backdrop-filter: blur(5px);
+            border: 1px solid rgba(255, 182, 193, 0.5);
+            text-align: center;
+        }
+
+        h1 {
+            font-size: 26px;
+            font-weight: 900;
+            color: #C71585;
+            margin-bottom: 20px;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            text-shadow: 2px 2px 4px rgba(255, 182, 193, 0.6);
+        }
+
+        h3 {
+            color: #DB7093;
+            font-size: 18px;
+            margin-bottom: 15px;
+        }
+
+        h4 {
+            color: #C71585;
+            margin-top: 25px;
+            margin-bottom: 10px;
+            border-bottom: 1px solid #FFC0CB;
+            padding-bottom: 5px;
+            text-align: left;
+        }
+
+        input[type="text"], input[type="password"] {
+            width: 100%;
+            padding: 12px;
+            margin: 8px 0;
+            border: 1px solid #D8BFD8;
+            border-radius: 8px;
+            box-sizing: border-box;
+        }
+
+        button {
+            width: 100%;
+            padding: 12px;
+            margin: 8px 0;
+            border: none;
+            border-radius: 8px;
+            font-size: 15px;
+            font-weight: bold;
+            color: white;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .btn-primary {
+            background-color: #C71585;
+        }
+
+            .btn-primary:hover {
+                background-color: #B01175;
+            }
+
+        .btn-secondary {
+            background-color: #45B7A0;
+        }
+
+            .btn-secondary:hover {
+                background-color: #3AA38F;
+            }
+
+        .btn-danger {
+            background-color: #DB7093;
+            color: white;
+        }
+
+        .btn-group {
+            display: flex;
+            gap: 10px;
+        }
+
+        .hidden {
+            display: none !important;
+        }
+
+        .success {
+            color: #2e7d32;
+            font-weight: bold;
+        }
+
+        .error {
+            color: #c62828;
+            font-weight: bold;
+        }
+
+        /* ИГРОВАЯ ПАНЕЛЬ СУДОКУ */
+        .game-status-bar {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 15px;
+            background: #FFE6E6FA;
+            padding: 12px;
+            border-radius: 8px;
+            font-size: 16px;
+        }
+
+        #timer {
+            font-weight: bold;
+            color: #C71585;
+        }
+
+        #hearts {
+            font-size: 20px;
+            letter-spacing: 2px;
+        }
+
+        .sudoku-grid {
+            display: grid;
+            grid-template-columns: repeat(9, 1fr);
+            gap: 1px;
+            background-color: #4A004A;
+            border: 3px solid #4A004A;
+            border-radius: 8px;
+            margin: 15px auto;
+            max-width: 400px;
+            width: 100%;
+            aspect-ratio: 1;
+        }
+
+        .sudoku-cell {
+            background-color: white;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            position: relative;
+        }
+
+            .sudoku-cell input {
+                width: 100%;
+                height: 100%;
+                border: none;
+                text-align: center;
+                font-size: 18px;
+                font-weight: bold;
+                color: #C71585;
+                padding: 0;
+                background: transparent;
+            }
+
+            /* Выделение блоков 3х3 жирными границами */
+            .sudoku-cell:nth-child(3n) {
+                border-right: 2px solid #4A004A;
+            }
+
+        .sudoku-grid > .sudoku-cell:nth-child(9n) {
+            border-right: none;
+        }
+
+        .sudoku-grid > .sudoku-cell:nth-child(n+19):nth-child(-n+27),
+        .sudoku-grid > .sudoku-cell:nth-child(n+46):nth-child(-n+54) {
+            border-bottom: 2px solid #4A004A;
+        }
+
+        .sudoku-cell input:disabled {
+            background-color: #FFF0F5;
+            color: #4A004A;
+            font-weight: 900;
+        }
+
+        /* Таблицы (Статистика и Лидерборд) */
+        .stats-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 10px;
+            background: white;
+            border-radius: 8px;
+            overflow: hidden;
+            font-size: 14px;
+        }
+
+            .stats-table th, .stats-table td {
+                padding: 10px;
+                text-align: left;
+                border-bottom: 1px solid #F5F0F5;
+            }
+
+            .stats-table th {
+                background-color: #FFE6E6FA;
+                color: #4A004A;
+            }
+
+        .current-user-row {
+            background-color: #FFF0F5;
+            font-weight: bold;
+        }
+
+        .notification-item {
+            background: white;
+            border-left: 4px solid #45B7A0;
+            padding: 10px;
+            margin: 5px 0;
+            border-radius: 4px;
+            text-align: left;
+            font-size: 14px;
+        }
+
+            .notification-item.urgent {
+                border-left-color: #FF4500;
+                background-color: #FFF5F5;
+            }
+    </style>
+</head>
+<body>
+
+    <div class="container">
+        <h1>🌸 Sudoku Web Client</h1>
+
+        <div id="authForm">
+            <h3>Вход / Регистрация</h3>
+            <input type="text" id="login" placeholder="Логин">
+            <input type="password" id="password" placeholder="Пароль">
+            <div class="btn-group">
+                <button class="btn-secondary" onclick="register()">Регистрация</button>
+                <button class="btn-primary" onclick="login()">Вход</button>
+            </div>
+            <div id="authMessage"></div>
+        </div>
+
+        <div id="dashboard" class="hidden">
+            <h3>Добро пожаловать, ✨ <span id="userLogin"></span>!</h3>
+
+            <div class="game-status-bar">
+                <select id="difficultySelect" style="padding: 8px; border-radius: 5px; border: 1px solid #D8BFD8;">
+                    <option value="Easy">Легко</option>
+                    <option value="Medium">Норма</option>
+                    <option value="Hard">Сложно</option>
+                </select>
+                <div id="hearts">❤️❤️❤️</div>
+                <div id="timer">⏱️ 00:00</div>
+            </div>
+
+            <button class="btn-primary" onclick="startNewGame()" style="margin-top: 0;">🎮 Начать новую игру</button>
+
+            <div class="sudoku-grid" id="sudokuGrid"></div>
+
+            <h4>🏆 Глобальная таблица лидеров</h4>
+            <div id="leaderboardContainer"></div>
+
+            <h4>📊 Мои личные рекорды</h4>
+            <div id="statsContainer"></div>
+
+            <h4>🔔 Мои уведомления</h4>
+            <div id="notificationsContainer"></div>
+
+            <div style="margin-top: 25px; border-top: 1px solid #FFC0CB; padding-top: 15px;">
+                <button class="btn-danger" onclick="logout()">⬅ Выйти из аккаунта</button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        const API_URL = 'https://localhost:7067'; // Замени на свой порт из Swagger
+        let authToken = '';
+        let currentUser = '';
+
+        let timerInterval = null;
+        let timeSeconds = 0;
+        let currentDifficulty = 'Easy';
+        let lives = 3;
+
+        let solutionGrid = [];
+        let currentGrid = [];
+
+        // --- АЛГОРИТМ ГЕНЕРАЦИИ СУДОКУ ---
+        function getBaseGrid() {
+            return [
+                [1, 2, 3, 4, 5, 6, 7, 8, 9],
+                [4, 5, 6, 7, 8, 9, 1, 2, 3],
+                [7, 8, 9, 1, 2, 3, 4, 5, 6],
+                [2, 3, 1, 5, 6, 4, 8, 9, 7],
+                [5, 6, 4, 8, 9, 7, 2, 3, 1],
+                [8, 9, 7, 2, 3, 1, 5, 6, 4],
+                [3, 1, 2, 6, 4, 5, 9, 7, 8],
+                [6, 4, 5, 9, 7, 8, 3, 1, 2],
+                [9, 7, 8, 3, 1, 2, 6, 4, 5]
+            ];
+        }
+
+        function generateUniqueSudoku() {
+            let grid = getBaseGrid();
+            function transpose() { grid = grid[0].map((_, c) => grid.map(row => row[c])); }
+            function swapRows() {
+                const area = Math.floor(Math.random() * 3) * 3;
+                const r1 = area + Math.floor(Math.random() * 3);
+                let r2 = area + Math.floor(Math.random() * 3);
+                while (r1 === r2) r2 = area + Math.floor(Math.random() * 3);
+                let t = grid[r1]; grid[r1] = grid[r2]; grid[r2] = t;
+            }
+            for (let i = 0; i < 25; i++) { swapRows(); transpose(); }
+            return grid;
+        }
+
+        function createPuzzle(fullGrid, difficulty) {
+            let puzzle = fullGrid.map(row => [...row]);
+            let toRemove = difficulty === 'Easy' ? 30 : difficulty === 'Medium' ? 45 : 55;
+            let removed = 0;
+            while (removed < toRemove) {
+                const r = Math.floor(Math.random() * 9);
+                const c = Math.floor(Math.random() * 9);
+                if (puzzle[r][c] !== 0) { puzzle[r][c] = 0; removed++; }
+            }
+            return puzzle;
+        }
+
+        // --- АВТОРИЗАЦИЯ ---
+        async function register() {
+            const login = document.getElementById('login').value;
+            const password = document.getElementById('password').value;
+            const message = document.getElementById('authMessage');
+            try {
+                const response = await fetch(`${API_URL}/api/Auth/register`, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ login, password })
+                });
+                if (response.ok) message.innerHTML = '<span class="success">✅ Успешно! Теперь войдите.</span>';
+                else message.innerHTML = `<span class="error">❌ Ошибка: ${await response.text()}</span>`;
+            } catch { message.innerHTML = '<span class="error">❌ Сервер API недоступен</span>'; }
+        }
+
+        async function login() {
+            const login = document.getElementById('login').value;
+            const password = document.getElementById('password').value;
+            const message = document.getElementById('authMessage');
+            try {
+                const response = await fetch(`${API_URL}/api/Auth/login`, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ login, password })
+                });
+                if (response.ok) {
+                    const data = await response.json();
+                    authToken = data.token;
+                    currentUser = login;
+
+                    document.getElementById('authForm').classList.add('hidden');
+                    document.getElementById('dashboard').classList.remove('hidden');
+                    document.getElementById('userLogin').innerText = login;
+
+                    resetGameSession();
+                    updateAllData();
+                } else { message.innerHTML = `<span class="error">❌ Ошибка: ${await response.text()}</span>`; }
+            } catch { message.innerHTML = '<span class="error">❌ Сервер API недоступен</span>'; }
+        }
+
+        function updateAllData() {
+            getStats();
+            getNotifications();
+            getLeaderboard();
+        }
+
+        // --- ЛОГИКА GAMEPAGE С СЕРДЕЧКАМИ ---
+        function startNewGame() {
+            currentDifficulty = document.getElementById('difficultySelect').value;
+            const gridContainer = document.getElementById('sudokuGrid');
+            gridContainer.innerHTML = '';
+
+            lives = 3;
+            updateHeartsUI();
+
+            solutionGrid = generateUniqueSudoku();
+            currentGrid = createPuzzle(solutionGrid, currentDifficulty);
+
+            clearInterval(timerInterval);
+            timeSeconds = 0;
+            document.getElementById('timer').innerText = '⏱️ 00:00';
+            timerInterval = setInterval(() => {
+                timeSeconds++;
+                const m = String(Math.floor(timeSeconds / 60)).padStart(2, '0');
+                const s = String(timeSeconds % 60).padStart(2, '0');
+                document.getElementById('timer').innerText = `⏱️ ${m}:${s}`;
+            }, 1000);
+
+            for (let r = 0; r < 9; r++) {
+                for (let c = 0; c < 9; c++) {
+                    const val = currentGrid[r][c];
+                    const cell = document.createElement('div');
+                    cell.classList.add('sudoku-cell');
+
+                    if (val !== 0) {
+                        cell.innerHTML = `<input type="number" value="${val}" disabled>`;
+                    } else {
+                        cell.innerHTML = `<input type="number" min="1" max="9" data-row="${r}" data-col="${c}" oninput="onCellInput(this)">`;
+                    }
+                    gridContainer.appendChild(cell);
+                }
+            }
+        }
+
+        function updateHeartsUI() {
+            let heartString = '';
+            for (let i = 0; i < 3; i++) {
+                heartString += (i < lives) ? '❤️' : '💔';
+            }
+            document.getElementById('hearts').innerText = heartString;
+        }
+
+        // Мгновенная проверка при вводе (как в твоем WPF!)
+        async function onCellInput(input) {
+            const r = parseInt(input.getAttribute('data-row'));
+            const c = parseInt(input.getAttribute('data-col'));
+            const val = parseInt(input.value) || 0;
+
+            if (val === 0) {
+                input.style.backgroundColor = 'white';
+                return;
+            }
+
+            // Если ввели не то число
+            if (val !== solutionGrid[r][c]) {
+                input.style.backgroundColor = '#FFC0CB'; // Подсвечиваем розовым
+                lives--;
+                updateHeartsUI();
+
+                if (lives <= 0) {
+                    clearInterval(timerInterval);
+                    alert('💔 Game Over! Вы израсходовали все жизни. Попробуйте снова.');
+                    disableGrid();
+                }
+            } else {
+                // Если число верное
+                input.style.backgroundColor = '#E0F7FA'; // Подсвечиваем бирюзовым
+                input.disabled = true; // Блокируем, так как оно угадано правильно
+
+                checkGameWin(); // Проверяем, вдруг это была последняя клетка
+            }
+        }
+
+        function disableGrid() {
+            const inputs = document.querySelectorAll('.sudoku-grid input');
+            inputs.forEach(i => i.disabled = true);
+        }
+
+        // Проверка на победу (если не осталось пустых или неверных ячеек)
+        async function checkGameWin() {
+            const inputs = document.querySelectorAll('.sudoku-grid input');
+            let win = true;
+            inputs.forEach(input => {
+                if (input.value === "" || input.style.backgroundColor === 'rgb(255, 192, 203)') {
+                    win = false;
+                }
+            });
+
+            if (win) {
+                clearInterval(timerInterval);
+
+                // Рассчитываем честные очки по формуле сложности
+                let baseScore = currentDifficulty === 'Easy' ? 150 : currentDifficulty === 'Medium' ? 400 : 700;
+                let finalScore = Math.max(25, baseScore - Math.floor(timeSeconds * 0.4) + (lives * 30));
+
+                alert(`🎉 Победа! Вы успешно решили Судоку!\n⏱️ Время: ${timeSeconds} сек.\n⭐ Очки: ${finalScore}\nРезультат отправляется в лидерборд!`);
+
+                await sendProgressToApi(currentDifficulty, finalScore, timeSeconds);
+            }
+        }
+
+        // Отправка в Базу данных через твой API контроллер
+        async function sendProgressToApi(difficulty, score, timeSeconds) {
+            try {
+                const response = await fetch(`${API_URL}/api/Progress/save`, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'Authorization': `Bearer ${authToken}`
+                    },
+                    body: JSON.stringify({ difficulty, score, timeSeconds })
+                });
+                if (response.ok) {
+                    updateAllData(); // Перерисовываем лидерборд и рекорды на странице
+                }
+            } catch (e) { console.error('Ошибка связи с API при сохранении рекорда', e); }
+        }
+
+        // --- СИНХРОНИЗАЦИЯ ТАБЛИЦ ИЗ API ---
+
+        // Загрузка Глобальной таблицы лидеров
+        async function getLeaderboard() {
+            const container = document.getElementById('leaderboardContainer');
+            try {
+                // Название эндпоинта /api/Leaderboard или /api/Progress/leaderboard подставь свое
+                const response = await fetch(`${API_URL}/api/Progress/leaderboard`, {
+                    headers: { 'Authorization': `Bearer ${authToken}` }
+                });
+                const list = await response.json();
+
+                if (!list || list.length === 0) {
+                    container.innerHTML = '<p style="color: gray;">Таблица рекордов пуста. Стань первым!</p>';
+                    return;
+                }
+
+                let html = `<table class="stats-table">
+                        <tr><th>Место</th><th>Игрок</th><th>Сложность</th><th>Очки</th><th>Время</th></tr>`;
+
+                list.forEach((row, index) => {
+                    // Подсвечиваем строку текущего вошедшего игрока в таблице
+                    const isMe = row.login === currentUser || row.playerName === currentUser;
+                    html += `<tr class="${isMe ? 'current-user-row' : ''}">
+                            <td>${index + 1}</td>
+                            <td>👤 ${row.login || row.playerName}</td>
+                            <td>${row.difficulty}</td>
+                            <td><strong>${row.score}</strong></td>
+                            <td>${row.timeSeconds || row.completionTime} сек</td>
+                        </tr>`;
+                });
+                html += `</table>`;
+                container.innerHTML = html;
+            } catch { container.innerHTML = '<p style="color:red;">Не удалось загрузить таблицу лидеров</p>'; }
+        }
+
+        // Загрузка личной статистики
+        async function getStats() {
+            const container = document.getElementById('statsContainer');
+            try {
+                const response = await fetch(`${API_URL}/api/Progress/stats`, {
+                    headers: { 'Authorization': `Bearer ${authToken}` }
+                });
+                const stats = await response.json();
+                container.innerHTML = `<table class="stats-table">
+                        <tr><th>Параметр</th><th>Значение</th></tr>
+                        <tr><td>Всего сыграно игр</td><td>${stats.gamesPlayed ?? 0}</td></tr>
+                        <tr><td>Максимальный рекорд</td><td>${stats.highScore ?? 0}</td></tr>
+                        <tr><td>Лучшее время сборки</td><td>${stats.bestTime ? stats.bestTime + ' сек' : '—'}</td></tr>
+                    </table>`;
+            } catch { container.innerHTML = '<p class="error">Ошибка загрузки достижений</p>'; }
+        }
+
+        // Загрузка пуш-уведомлений
+        async function getNotifications() {
+            const container = document.getElementById('notificationsContainer');
+            try {
+                const response = await fetch(`${API_URL}/api/Notification/my`, {
+                    headers: { 'Authorization': `Bearer ${authToken}` }
+                });
+                const notifs = await response.json();
+                if (!notifs || notifs.length === 0) { container.innerHTML = '<p style="color:gray;">Нет уведомлений</p>'; return; }
+
+                let html = '';
+                notifs.forEach(n => {
+                    const text = n.message || '';
+                    const isUrgent = text.toLowerCase().includes('просрок') || text.toLowerCase().includes('внимание');
+                    html += `<div class="notification-item ${isUrgent ? 'urgent' : ''}">
+                            <strong>🔔 ${n.title || 'Уведомление'}:</strong> ${text}
+                        </div>`;
+                });
+                container.innerHTML = html;
+            } catch { container.innerHTML = '<p class="error">Ошибка загрузки уведомлений</p>'; }
+        }
+
+        function resetGameSession() {
+            clearInterval(timerInterval);
+            document.getElementById('timer').innerText = '⏱️ 00:00';
+            document.getElementById('sudokuGrid').innerHTML = '';
+            document.getElementById('hearts').innerText = '❤️❤️❤️';
+        }
+
+        function logout() {
+            authToken = '';
+            currentUser = '';
+            resetGameSession();
+            document.getElementById('authForm').classList.remove('hidden');
+            document.getElementById('dashboard').classList.add('hidden');
+            document.getElementById('login').value = '';
+            document.getElementById('password').value = '';
+        }
+    </script>
+</body>
+</html>

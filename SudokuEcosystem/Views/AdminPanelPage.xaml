@@ -1,0 +1,149 @@
+﻿<Page x:Class="SudokuEcosystem.Views.AdminPanelPage"
+      xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+      xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+      Title="Админ-панель" Background="#FFFFF0F5">
+
+    <Page.Resources>
+        <Style TargetType="Button" x:Key="AdminActionButton">
+            <Setter Property="Height" Value="38"/>
+            <Setter Property="FontSize" Value="14"/>
+            <Setter Property="FontWeight" Value="SemiBold"/>
+            <Setter Property="Background" Value="#FFC71585"/>
+            <Setter Property="Foreground" Value="White"/>
+            <Setter Property="Cursor" Value="Hand"/>
+            <Setter Property="BorderThickness" Value="0"/>
+            <Style.Resources>
+                <Style TargetType="Border">
+                    <Setter Property="CornerRadius" Value="8"/>
+                </Style>
+            </Style.Resources>
+        </Style>
+
+        <Style TargetType="Button" x:Key="GridInnerButton">
+            <Setter Property="Height" Value="26"/>
+            <Setter Property="FontSize" Value="12"/>
+            <Setter Property="FontWeight" Value="SemiBold"/>
+            <Setter Property="Cursor" Value="Hand"/>
+            <Setter Property="BorderThickness" Value="0"/>
+            <Style.Resources>
+                <Style TargetType="Border">
+                    <Setter Property="CornerRadius" Value="5"/>
+                </Style>
+            </Style.Resources>
+        </Style>
+    </Page.Resources>
+
+    <Grid>
+        <Grid.Background>
+            <LinearGradientBrush StartPoint="0,0" EndPoint="1,1">
+                <GradientStop Color="#FFE6E6FA" Offset="0.0"/>
+                <GradientStop Color="#FFFFF0F5" Offset="0.5"/>
+                <GradientStop Color="#FFFFE4E1" Offset="1.0"/>
+            </LinearGradientBrush>
+        </Grid.Background>
+
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="*"/>
+            <RowDefinition Height="Auto"/>
+        </Grid.RowDefinitions>
+
+        <Border Grid.Row="0" Background="#85FFFFFF" Padding="12" Margin="15,15,15,10" CornerRadius="12">
+            <Grid>
+                <Button Content="⬅ Меню" 
+                        Style="{StaticResource AdminActionButton}"
+                        Background="#FFDB7093" 
+                        HorizontalAlignment="Left" 
+                        VerticalAlignment="Center"
+                        Width="90" Height="35"
+                        Click="BackButton_Click"/>
+                <TextBlock Text=" АДМИН-ПАНЕЛЬ УПРАВЛЕНИЯ" FontSize="22" FontWeight="Black" 
+                           Foreground="#FFC71585" HorizontalAlignment="Center" VerticalAlignment="Center">
+                    <TextBlock.Effect>
+                        <DropShadowEffect BlurRadius="5" Color="#FFFFB6C1" ShadowDepth="2" Opacity="0.6"/>
+                    </TextBlock.Effect>
+                </TextBlock>
+            </Grid>
+        </Border>
+
+        <Border Grid.Row="1" Background="#85FFFFFF" CornerRadius="15" Margin="15,5,15,10" Padding="15">
+            <Border.Effect>
+                <DropShadowEffect BlurRadius="8" Color="#FFD8BFD8" ShadowDepth="2" Opacity="0.4"/>
+            </Border.Effect>
+
+            <DataGrid x:Name="UsersGrid" AutoGenerateColumns="False" 
+                      Background="Transparent" BorderThickness="0"
+                      RowBackground="Transparent" AlternatingRowBackground="#20FFC0CB"
+                      FontSize="14" HeadersVisibility="Column" IsReadOnly="True" 
+                      GridLinesVisibility="None" HorizontalGridLinesBrush="#FFD8BFD8">
+
+                <DataGrid.ColumnHeaderStyle>
+                    <Style TargetType="DataGridColumnHeader">
+                        <Setter Property="Background" Value="#FFE6E6FA"/>
+                        <Setter Property="Foreground" Value="#FF4A004A"/>
+                        <Setter Property="FontWeight" Value="Bold"/>
+                        <Setter Property="Padding" Value="10,8"/>
+                        <Setter Property="BorderThickness" Value="0,0,0,2"/>
+                        <Setter Property="BorderBrush" Value="#FFDB7093"/>
+                    </Style>
+                </DataGrid.ColumnHeaderStyle>
+
+                <DataGrid.CellStyle>
+                    <Style TargetType="DataGridCell">
+                        <Setter Property="Padding" Value="10,6"/>
+                        <Setter Property="Template">
+                            <Setter.Value>
+                                <ControlTemplate TargetType="DataGridCell">
+                                    <Border Padding="{TemplateBinding Padding}" Background="{TemplateBinding Background}">
+                                        <ContentPresenter VerticalAlignment="Center"/>
+                                    </Border>
+                                </ControlTemplate>
+                            </Setter.Value>
+                        </Setter>
+                        <Style.Triggers>
+                            <Trigger Property="IsSelected" Value="True">
+                                <Setter Property="Background" Value="#FFFFC0CB"/>
+                                <Setter Property="Foreground" Value="#FF4A004A"/>
+                            </Trigger>
+                        </Style.Triggers>
+                    </Style>
+                </DataGrid.CellStyle>
+
+                <DataGrid.Columns>
+                    <DataGridTextColumn Header="ID" Binding="{Binding Id}" Width="60"/>
+                    <DataGridTextColumn Header="Логин" Binding="{Binding Login}" Width="1.5*"/>
+                    <DataGridTextColumn Header="Статус" Binding="{Binding Status}" Width="1*"/>
+                    <DataGridTextColumn Header="Бан до" Binding="{Binding BanExpiryDisplay}" Width="1.5*"/>
+
+                    <DataGridTemplateColumn Header="Действие" Width="150">
+                        <DataGridTemplateColumn.CellTemplate>
+                            <DataTemplate>
+                                <StackPanel Orientation="Horizontal" HorizontalAlignment="Center">
+                                    <Button Content=" Бан" Width="62" Margin="3,0" 
+                                            Style="{StaticResource GridInnerButton}"
+                                            Click="BanButton_Click" Tag="{Binding}"
+                                            Background="#FFFF4500" Foreground="White"/>
+
+                                    <Button Content=" Снять" Width="62" Margin="3,0" 
+                                            Style="{StaticResource GridInnerButton}"
+                                            Click="UnbanButton_Click" Tag="{Binding}"
+                                            Background="#FF45B7A0" Foreground="White"/>
+                                </StackPanel>
+                            </DataTemplate>
+                        </DataGridTemplateColumn.CellTemplate>
+                    </DataGridTemplateColumn>
+                </DataGrid.Columns>
+            </DataGrid>
+        </Border>
+
+        <Button Grid.Row="2" Content=" Создать резервную копию БД" 
+                Style="{StaticResource AdminActionButton}"
+                Height="42" Width="290" HorizontalAlignment="Center" Margin="0,10,0,20"
+                Background="#FF45B7A0" Foreground="White" FontWeight="Bold" 
+                Click="BackupButton_Click">
+            <Button.Effect>
+                <DropShadowEffect BlurRadius="6" Color="#FF45B7A0" ShadowDepth="2" Opacity="0.4"/>
+            </Button.Effect>
+        </Button>
+    </Grid>
+</Page>

@@ -1,0 +1,215 @@
+﻿<Page x:Class="SudokuEcosystem.Views.MainMenuPage"
+      xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+      xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+      xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+      xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+      mc:Ignorable="d" 
+      Width="850"
+  Height="650"
+      Title="Главное Меню"
+      Background="#FFFFF0F5">
+
+    <Grid>
+        <Grid.Background>
+            <LinearGradientBrush StartPoint="0,0" EndPoint="1,1">
+                <GradientStop Color="#FFE6E6FA" Offset="0.0"/>
+                <GradientStop Color="#FFFFF0F5" Offset="0.5"/>
+                <GradientStop Color="#FFFFE4E1" Offset="1.0"/>
+            </LinearGradientBrush>
+        </Grid.Background>
+
+        <Grid.RowDefinitions>
+            <RowDefinition Height="140"/>
+            <RowDefinition Height="*"/>
+            <RowDefinition Height="70"/>
+        </Grid.RowDefinitions>
+        <Button x:Name="LogoutBtn"
+        Grid.Row="0"
+        Content=" Выйти"
+        FontSize="14"
+        Width="90"
+        Height="35"
+        HorizontalAlignment="Left"
+        VerticalAlignment="Top"
+        Margin="20,20,0,0"
+        Background="#70FFFFFF"
+        Foreground="#FF8B0000"
+        BorderBrush="#FFCD5C5C"
+        BorderThickness="1"
+        Cursor="Hand"
+        Click="LogoutBtn_Click">
+            <Button.Resources>
+                <Style TargetType="Border">
+                    <Setter Property="CornerRadius" Value="10"/>
+                </Style>
+            </Button.Resources>
+        </Button>
+        <Button x:Name="SettingsBtn" Grid.Row="0" 
+                Content="⚙️" FontSize="20"
+                HorizontalAlignment="Right" VerticalAlignment="Top" 
+                Margin="0,20,20,0" Width="45" Height="45"
+                Background="#70FFFFFF" Foreground="#FFC71585"
+                BorderBrush="#FFDB7093" BorderThickness="1"
+                Cursor="Hand" Click="SettingsButton_Click" ToolTip="Настройки">
+            <Button.Resources>
+                <Style TargetType="Border">
+                    <Setter Property="CornerRadius" Value="22"/>
+                </Style>
+            </Button.Resources>
+        </Button>
+
+        <StackPanel Grid.Row="0" VerticalAlignment="Center" HorizontalAlignment="Center">
+            <TextBlock Text="🌸 SUDOKU 🌸" 
+                       FontSize="42" 
+                       FontWeight="Black" 
+                       Foreground="#FFC71585" 
+                       TextAlignment="Center">
+                <TextBlock.Effect>
+                    <DropShadowEffect BlurRadius="10" Color="#FFFFB6C1" ShadowDepth="3" Opacity="0.7"/>
+                </TextBlock.Effect>
+            </TextBlock>
+            <TextBlock Text="Разминай мозги с удовольствием" 
+                       FontSize="14" 
+                       FontStyle="Italic" 
+                       Foreground="#FF8B008B" 
+                       Margin="0,5,0,0" 
+                       TextAlignment="Center"/>
+        </StackPanel>
+
+        <Grid Grid.Row="1" MaxWidth="450" VerticalAlignment="Center" Margin="20,0,20,0">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="Auto"/>
+            </Grid.RowDefinitions>
+
+            <Border Grid.Row="0" Background="#70FFFFFF" CornerRadius="15" Padding="15" Margin="0,0,0,15">
+                <StackPanel>
+                    <TextBlock Text="ВЫБЕРИТЕ СЛОЖНОСТЬ" 
+                               FontSize="12" FontWeight="Bold" 
+                               Foreground="#FFDB7093" HorizontalAlignment="Center" 
+                               Margin="0,0,0,10"/>
+
+                    <WrapPanel HorizontalAlignment="Center">
+                        <Button Content=" Легко" Width="110" Height="35" Margin="4" 
+                                Click="Difficulty_Click" Tag="Easy" Cursor="Hand"
+                                Background="#FFFFC0CB" Foreground="#FF4A004A" FontWeight="SemiBold"
+                                BorderBrush="#FFDB7093" BorderThickness="1">
+                            <Button.Resources>
+                                <Style TargetType="Border">
+                                    <Setter Property="CornerRadius" Value="8"/>
+                                </Style>
+                            </Button.Resources>
+                        </Button>
+
+                        <Button Content=" Норма" Width="110" Height="35" Margin="4" 
+                                Click="Difficulty_Click" Tag="Medium" Cursor="Hand"
+                                Background="#FFE6E6FA" Foreground="#FF4A004A" FontWeight="SemiBold"
+                                BorderBrush="#FFBA55D3" BorderThickness="1">
+                            <Button.Resources>
+                                <Style TargetType="Border">
+                                    <Setter Property="CornerRadius" Value="8"/>
+                                </Style>
+                            </Button.Resources>
+                        </Button>
+
+                        <Button Content=" Сложно" Width="110" Height="35" Margin="4" 
+                                Click="Difficulty_Click" Tag="Hard" Cursor="Hand"
+                                Background="#FFD8BFD8" Foreground="#FF4A004A" FontWeight="SemiBold"
+                                BorderBrush="#FF9370DB" BorderThickness="1">
+                            <Button.Resources>
+                                <Style TargetType="Border">
+                                    <Setter Property="CornerRadius" Value="8"/>
+                                </Style>
+                            </Button.Resources>
+                        </Button>
+                    </WrapPanel>
+                </StackPanel>
+            </Border>
+
+            <Button Grid.Row="1" 
+        x:Name="StartGameBtn"
+        Click="StartGame_Click" 
+        Height="50" Background="#FFC71585" Foreground="White" 
+        FontSize="18" FontWeight="Bold" Cursor="Hand" BorderThickness="0" Margin="0,0,0,15">
+                <Button.Resources>
+                    <Style TargetType="Border">
+                        <Setter Property="CornerRadius" Value="12"/>
+                    </Style>
+                </Button.Resources>
+                <Button.Content>
+                    <TextBlock Text="🎮 НАЧАТЬ ИГРУ" VerticalAlignment="Center"/>
+                </Button.Content>
+                <Button.Effect>
+                    <DropShadowEffect BlurRadius="8" Color="#FFC71585" ShadowDepth="2" Opacity="0.5"/>
+                </Button.Effect>
+            </Button>
+
+            <StackPanel Grid.Row="2">
+                <Button Content=" Таблица лидеров" Height="40" Margin="0,4,0,4"
+                        Background="#85FFFFFF" Foreground="#FF8B008B" FontWeight="SemiBold"
+                        BorderBrush="#FFD8BFD8" BorderThickness="1" Cursor="Hand"
+                        Click="LeaderboardButton_Click">
+                    <Button.Resources>
+                        <Style TargetType="Border">
+                            <Setter Property="CornerRadius" Value="10"/>
+                        </Style>
+                    </Button.Resources>
+                </Button>
+
+                <Button Content=" Правила игры" Height="40" Margin="0,4,0,4"
+                        Background="#85FFFFFF" Foreground="#FF8B008B" FontWeight="SemiBold"
+                        BorderBrush="#FFD8BFD8" BorderThickness="1" Cursor="Hand"
+                        Click="RulesButton_Click">
+                    <Button.Resources>
+                        <Style TargetType="Border">
+                            <Setter Property="CornerRadius" Value="10"/>
+                        </Style>
+                    </Button.Resources>
+                </Button>
+
+                <Button Content=" Выход из игры" Height="40" Margin="0,4,0,4"
+                        Background="#FFF0F0F0" Foreground="#FF8B0000" FontWeight="SemiBold"
+                        BorderBrush="#FFCD5C5C" BorderThickness="1" Cursor="Hand"
+                        Click="ExitButton_Click">
+                    <Button.Resources>
+                        <Style TargetType="Border">
+                            <Setter Property="CornerRadius" Value="10"/>
+                        </Style>
+                    </Button.Resources>
+                </Button>
+            </StackPanel>
+        </Grid>
+
+        <Grid Grid.Row="2" Margin="20,0,20,15" VerticalAlignment="Bottom">
+            <Button x:Name="AnalyticsBtn" 
+                    Content=" Статистика и Аналитика" 
+                    HorizontalAlignment="Left" 
+                    Width="200" Height="35" 
+                    Background="#FFE6E6FA" Foreground="#FF4B0082" 
+                    BorderBrush="#FF9370DB" FontWeight="Medium" 
+                    Cursor="Hand" Click="AnalyticsButton_Click">
+                <Button.Resources>
+                    <Style TargetType="Border">
+                        <Setter Property="CornerRadius" Value="8"/>
+                    </Style>
+                </Button.Resources>
+            </Button>
+
+            <Button x:Name="AdminPanelBtn" 
+                    Content="👑 Админ-Панель" 
+                    HorizontalAlignment="Right" 
+                    Width="150" Height="35" 
+                    Background="#FFFFB6C1" Foreground="#FF8B0000" 
+                    BorderBrush="#FFDB7093" FontWeight="Bold" 
+                    Visibility="Collapsed" Cursor="Hand"
+                    Click="AdminPanelBtn_Click">
+                <Button.Resources>
+                    <Style TargetType="Border">
+                        <Setter Property="CornerRadius" Value="8"/>
+                    </Style>
+                </Button.Resources>
+            </Button>
+        </Grid>
+    </Grid>
+</Page>

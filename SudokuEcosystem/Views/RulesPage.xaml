@@ -1,0 +1,95 @@
+﻿<Page x:Class="SudokuEcosystem.Views.RulesPage"
+      xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+      xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+      xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+      xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+      mc:Ignorable="d" 
+       Width="850"
+  Height="650"
+      Title="Правила игры"
+      Background="#FFFFF0F5">
+
+    <Grid>
+        <!-- Фоновый градиент -->
+        <Grid.Background>
+            <LinearGradientBrush StartPoint="0,0" EndPoint="1,1">
+                <GradientStop Color="#FFE6E6FA" Offset="0.0"/>
+                <GradientStop Color="#FFFFF0F5" Offset="0.5"/>
+                <GradientStop Color="#FFFFE4E1" Offset="1.0"/>
+            </LinearGradientBrush>
+        </Grid.Background>
+
+        <Grid.RowDefinitions>
+            <RowDefinition Height="100"/>
+            <!-- Шапка -->
+            <RowDefinition Height="*"/>
+            <!-- Текст правил -->
+            <RowDefinition Height="80"/>
+            <!-- Кнопка назад -->
+        </Grid.RowDefinitions>
+
+        <!-- Шапка -->
+        <TextBlock Grid.Row="0" Text="📖 ПРАВИЛА ИГРЫ СУДОКУ" 
+                   FontSize="28" FontWeight="Black" Foreground="#FFC71585" 
+                   HorizontalAlignment="Center" VerticalAlignment="Center">
+            <TextBlock.Effect>
+                <DropShadowEffect BlurRadius="5" Color="#FFFFB6C1" ShadowDepth="2" Opacity="0.6"/>
+            </TextBlock.Effect>
+        </TextBlock>
+
+        <!-- Контент с правилами -->
+        <Border Grid.Row="1" Background="#90FFFFFF" CornerRadius="15" Margin="40,0,40,0" Padding="25">
+            <ScrollViewer VerticalScrollBarVisibility="Auto">
+                <StackPanel>
+                    <TextBlock Text="Что такое Судоку?" FontSize="18" FontWeight="Bold" Foreground="#FF8B008B" Margin="0,0,0,10"/>
+                    <TextBlock Text="Судоку — это головоломка с числами, основанная на логическом мышлении. Вам не нужно производить математические расчеты — вся задача сводится к правильному распределению цифр." 
+                               FontSize="14" Foreground="#FF4A004A" TextWrapping="Wrap" Margin="0,0,0,20"/>
+
+                    <TextBlock Text=" Главная цель:" FontSize="18" FontWeight="Bold" Foreground="#FF8B008B" Margin="0,0,0,10"/>
+                    <TextBlock Text="Заполнить игровое поле размером 9х9 цифровыми значениями от 1 до 9 так, чтобы выполнялись три фундаментальных правила:" 
+                               FontSize="14" Foreground="#FF4A004A" TextWrapping="Wrap" Margin="0,0,0,10"/>
+
+                    <!-- Список правил -->
+                    <BulletDecorator Margin="15,5,0,5">
+                        <BulletDecorator.Bullet>
+                            <TextBlock Text="• " FontSize="16" FontWeight="Bold" Foreground="#FFC71585"/>
+                        </BulletDecorator.Bullet>
+                        <TextBlock Text="В каждой вертикальной колонке каждая цифра от 1 до 9 должна встречаться ровно один раз." FontSize="14" Foreground="#FF4A004A" TextWrapping="Wrap"/>
+                    </BulletDecorator>
+
+                    <BulletDecorator Margin="15,5,0,5">
+                        <BulletDecorator.Bullet>
+                            <TextBlock Text="• " FontSize="16" FontWeight="Bold" Foreground="#FFC71585"/>
+                        </BulletDecorator.Bullet>
+                        <TextBlock Text="В каждой горизонтальной строке каждая цифра от 1 до 9 должна встречаться ровно один раз." FontSize="14" Foreground="#FF4A004A" TextWrapping="Wrap"/>
+                    </BulletDecorator>
+
+                    <BulletDecorator Margin="15,5,0,15">
+                        <BulletDecorator.Bullet>
+                            <TextBlock Text="• " FontSize="16" FontWeight="Bold" Foreground="#FFC71585"/>
+                        </BulletDecorator.Bullet>
+                        <TextBlock Text="В каждом из 9 малых квадратов (размером 3х3 клетки) цифры от 1 до 9 также не должны повторяться." FontSize="14" Foreground="#FF4A004A" TextWrapping="Wrap"/>
+                    </BulletDecorator>
+
+                    <TextBlock Text=" Полезный совет:" FontSize="16" FontWeight="Bold" Foreground="#FFDB7093" Margin="0,10,0,5"/>
+                    <TextBlock Text="Внимательно анализируйте пересечения строк и столбцов. Если в строке и в малом квадрате уже есть цифра 5, то в оставшихся клетках на их пересечении пятерки быть точно не может!" 
+                               FontSize="13" FontStyle="Italic" Foreground="#FF778899" TextWrapping="Wrap"/>
+                </StackPanel>
+            </ScrollViewer>
+        </Border>
+
+        <!-- Кнопка назад -->
+        <Button Grid.Row="2" Content="⬅️ Вернуться в меню" Width="200" Height="40" 
+                Background="#FFC71585" Foreground="White" FontWeight="Bold" FontSize="14"
+                Cursor="Hand" BorderThickness="0" Click="Back_Click">
+            <Button.Resources>
+                <Style TargetType="Border">
+                    <Setter Property="CornerRadius" Value="10"/>
+                </Style>
+            </Button.Resources>
+            <Button.Effect>
+                <DropShadowEffect BlurRadius="6" Color="#FFC71585" ShadowDepth="2" Opacity="0.4"/>
+            </Button.Effect>
+        </Button>
+    </Grid>
+</Page>
